@@ -7,8 +7,6 @@ require('superagent-auth-bearer')(request);
 const mongoose = require('../../lib/mongooseDB');
 const app = require('../../lib/server');
 const FileData = require('../../fileData/model');
-const User = require('../../user/model');
-const userHandler = require('../../user/user-auth-middleware');
 
 process.env.DB_URL = 'mongodb://localhost:27017/visual_files_test';
 process.env.PORT = 9002;
@@ -24,19 +22,16 @@ describe('visual_files API', () => {
     const DB = process.env.DB_URL;
     mongoose.connect(DB, {useMongoClient: true});
     FileData.remove({});
-    User.remove({});
 
     server = app.listen(PORT);
   });
 
   beforeEach(() => {
-    User.remove({});
     return FileData.remove({});
   });
 
   afterAll(() => {
     FileData.remove({});
-    User.remove({});
     return mongoose.connection.close(function(){
       server.close();
     });

@@ -2,7 +2,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const User = require('../user/model');
 
 const fileMetaDataSchema = new mongoose.Schema({
   name: {type: String, required: true},
@@ -12,7 +11,7 @@ const fileMetaDataSchema = new mongoose.Schema({
   description : {type: String, required: true},
 });
 
-// 
+//
 // fileMetaDataSchema.pre('save', function(done){
 //   User.findById(this.user)
 //     .then(user => {

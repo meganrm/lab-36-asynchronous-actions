@@ -16,7 +16,7 @@ export const create = payload => (dispatch) => {
   dispatch(createAction(payload));
 };
 
-export const initialize = (dispatch) => {
+export const initialize = () => (dispatch) => {
   superagent.get(API)
     .then(res => dispatch(initAction(res.body)))
     .catch(console.log);
