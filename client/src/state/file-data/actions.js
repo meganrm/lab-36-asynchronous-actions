@@ -1,5 +1,9 @@
 
-export const create = fileData => ({
+const createAction = payload => ({
   type: 'FILEDATA_CREATE',
-  payload: fileData,
+  payload,
 });
+
+export const create = payload => (dispatch) => {
+  dispatch(createAction(payload));
+};

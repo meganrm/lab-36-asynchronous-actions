@@ -1,7 +1,25 @@
 const HTMLPlugin = require('html-webpack-plugin');
 const ExtractPlugin = require('extract-text-webpack-plugin');
 
+const { EnviromentPlugin, DefinePlugin } = require('webpack');
+
+const production = process.NODE_ENV;
+
+const plugins = [
+  new HTMLPlugin({
+    template: `${__dirname}/src/index.html`,
+  }),
+  new ExtractPlugin('bundle.[hash].css'),
+  new EnviromentPlugin(['NODE_ENV']),
+  new DefinePlugin({
+    ___API_URL___: JSON.stringify(process.env.API_URL),
+    __DEBUG___: JSON.stringify(!production),
+  }),
+];
+
 module.exports = {
+
+  plugins,
 
   entry: `${__dirname}/src/main.js`,
 
@@ -15,13 +33,6 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
   },
-
-  plugins: [
-    new HTMLPlugin({
-      template: `${__dirname}/src/index.html`,
-    }),
-    new ExtractPlugin('bundle.[hash].css'),
-  ],
 
   module: {
     rules: [

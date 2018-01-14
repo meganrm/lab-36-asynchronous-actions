@@ -4,13 +4,13 @@ import {
   createStore,
 } from 'redux';
 
-import * as fileData from './file-data';
+import { fileData } from './state';
 
 const reducers = {
   fileData: fileData.reducer,
 };
 const rootReducer = combineReducers(reducers);
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(fileData.thunk));
 
 export default store;
