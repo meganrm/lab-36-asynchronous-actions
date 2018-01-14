@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/meganrm/lab-13-object-relational-mapping#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",

@@ -12,7 +12,7 @@ class ServerError extends Error {
     super(...params);
     // Maintains proper stack trace for where our error was thrown
     Error.captureStackTrace(this, ServerError);
-
+    console.log(status);
     // Custom debugging information
     this.status = status;
   }

@@ -15,9 +15,8 @@ function errorCheck(err, body){
   return error;
 }
 
-fileRouter.get('/visual_files', bearerAuth, userHandler.getUserById, (req, res, next) => {
-  // let findObject = req.query || {};
-  let findObject = {user: req.user._id};
+fileRouter.get('/visual_files', (req, res, next) => {
+  let findObject = req.query || {};
   FileData.find(findObject)
     .then(files => res.status(200).send(files))
     .catch(err => next(new ServerError (404, 'cant find what you are looking for', err)));
@@ -29,8 +28,8 @@ fileRouter.get('/visual_files/:id', (req, res, next) => {
     .catch(err => next(new ServerError (404, 'cant find what you are looking for', err)));
 });
 
-fileRouter.post('/visual_files', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
-  req.body.userId = req.user._id;
+fileRouter.post('/visual_files', jsonParser, (req, res, next) => {
+  // req.body.userId = req.user._id;
   let newFileData = new FileData(req.body);
   newFileData.save() // saves the file to the database
     .then(data => res.status(200).send(data))
@@ -39,7 +38,7 @@ fileRouter.post('/visual_files', bearerAuth, userHandler.getUserById, jsonParser
     });
 });
 
-fileRouter.patch('/visual_files/:id', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
+fileRouter.patch('/visual_files/:id', jsonParser, (req, res, next) => {
   let newFileData = new FileData(req.body);
   delete newFileData._id;
   FileData.findOneAndUpdate({_id : req.params.id}, {$set:newFileData})
@@ -51,32 +50,30 @@ fileRouter.patch('/visual_files/:id', bearerAuth, userHandler.getUserById, jsonP
 
 fileRouter.put(
   '/visual_files/:id',
-  bearerAuth,
-  userHandler.getUserById,
   jsonParser, (req, res, next) => {
     let newFileData = (new FileData(req.body)).toJSON();
     newFileData._id = null;
     delete newFileData._id;
     FileData.findOneAndUpdate({_id: req.params.id}, newFileData)
-    .then(() => {
-      res.status(200).send('success!');
-    })
-    .catch((err) => {
-      next(errorCheck(err, newFileData));
-    });
+      .then(() => {
+        res.status(200).send('success!');
+      })
+      .catch((err) => {
+        next(errorCheck(err, newFileData));
+      });
   });
 
-fileRouter.delete('/visual_files', bearerAuth, userHandler.getUserById, jsonParser, (req, res, next) => {
+fileRouter.delete('/visual_files', jsonParser, (req, res, next) => {
   FileData.find({_id: req.params.id})
     .then( file => {
       if (file.user != req.user._id) {
         return next({statusCode: 403, message: 'you dont have authority to delete someone elses file'});
       }
       FileData.remove({_id: req.params.id})
-          .then(() => res.status(200).send('metadata successfully deleted'))
-          .catch((err) => {
-            next(errorCheck(err, req.body));
-          });
+        .then(() => res.status(200).send('metadata successfully deleted'))
+        .catch((err) => {
+          next(errorCheck(err, req.body));
+        });
     });
 
 

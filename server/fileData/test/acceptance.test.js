@@ -7,31 +7,36 @@ require('superagent-auth-bearer')(request);
 const mongoose = require('../../lib/mongooseDB');
 const app = require('../../lib/server');
 const FileData = require('../../fileData/model');
-const userHandler = require('../../user/user-auth-middleware')
+const User = require('../../user/model');
+const userHandler = require('../../user/user-auth-middleware');
 
 process.env.DB_URL = 'mongodb://localhost:27017/visual_files_test';
-process.env.PORT = 2000;
+process.env.PORT = 9002;
 let server;
 const PORT =  process.env.PORT;
 const url = `localhost:${PORT}/api/v1/visual_files`;
 
 
-Authroization:"Bearer jwt"
+//Authroization:"Bearer jwt"
 describe('visual_files API', () => {
 
   beforeAll(() => {
     const DB = process.env.DB_URL;
     mongoose.connect(DB, {useMongoClient: true});
-    return FileData.remove({});
+    FileData.remove({});
+    User.remove({});
+
     server = app.listen(PORT);
   });
 
   beforeEach(() => {
+    User.remove({});
     return FileData.remove({});
   });
 
   afterAll(() => {
     FileData.remove({});
+    User.remove({});
     return mongoose.connection.close(function(){
       server.close();
     });
@@ -68,6 +73,7 @@ describe('visual_files API', () => {
         .get(`${url}/test-id`)
         .catch((err) => {
           expect(err.status).toEqual(404);
+
           expect(err.response.error.text).toEqual('cant find what you are looking for');
         });
     });
@@ -75,7 +81,7 @@ describe('visual_files API', () => {
 
 
   describe('POST', () => {
-    xtest('it should create file metadata', () => {
+    test('it should create file metadata', () => {
       let testdata = new FileData({name:'post-name', description: 'description-get', path: 'path-get'});
       return request
         .post(url)
@@ -83,12 +89,12 @@ describe('visual_files API', () => {
         .then((res) => {
           expect(res.status).toEqual(200);
           res = res.body; //
-          expect(res.name).toEqual('name');
+          expect(res.name).toEqual('post-name');
           expect(res.description).toEqual('description-get');
           expect(res.path).toEqual('path-get');
         });
     });
-    xtest('it responds with 400 if no body', () => {
+    test('it responds with 400 if no body', () => {
       return request
         .post(url)
         .send()
@@ -100,7 +106,7 @@ describe('visual_files API', () => {
   });
 
   describe('PUT', () => {
-    xtest('it should update with a put', () => {
+    test('it should update with a put', () => {
       let testdata = new FileData({name:'name-put', description: 'description-put', path: 'path-put'});
       let changeddata = {name:'new-put-name', description: 'description-put-new', path: 'test-path-new'};
       return testdata.save()
@@ -115,7 +121,7 @@ describe('visual_files API', () => {
         });
     });
 
-    xtest('it should respond with 404 if not found', () => {
+    test('it should respond with 404 if not found', () => {
       let changeddata = new FileData({name:'new-put-name', description: 'description-put-new', path: 'test-path-new'});
       return request
         .put(`${url}/id`)
@@ -126,7 +132,7 @@ describe('visual_files API', () => {
         });
     });
 
-    xtest('it should respond with 400 if no body', () => {
+    test('it should respond with 400 if no body', () => {
       let testdata = new FileData({name:'put-name', description: 'description-put', path: 'path-put'});
       return testdata.save()
         .then((file) => {

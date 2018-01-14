@@ -10,8 +10,8 @@ app.use('/api/v1', authRouter);
 app.use('/api/v1', userRouter);
 
 app.use((err, req, res, next) => {
-  console.log(err.statusCode, err.message);
-  let status = err.statusCode || 400;
+  console.log(err.status, err.message);
+  let status = err.status || 400;
   let message = err.message || 'oh no server error';
   res.status(status).send(message);
   next();
