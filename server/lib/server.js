@@ -1,9 +1,15 @@
 'use strict';
+const morgan = require('morgan');
+const cors = require('cors');
 
 const app = module.exports = require('express')();
+
 const fileDataRouter = require(__dirname + '/../fileData/file-routes');
 const userRouter = require(__dirname + '/../user/user-routes');
 const authRouter = require(__dirname + '/../user/auth-routes');
+
+app.use(morgan('dev'));
+app.use(cors());
 
 app.use('/api/v1', fileDataRouter);
 app.use('/api/v1', authRouter);

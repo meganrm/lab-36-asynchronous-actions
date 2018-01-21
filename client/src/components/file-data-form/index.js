@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FileDataType = {
-  name: PropTypes.string,
-  date: PropTypes.sting,
-  user: PropTypes.string,
-  path: PropTypes.string,
-  description: PropTypes.string,
-};
+import { FileDataType } from '../../state/file-data/types';
 
 const FileDataDefault = {
   name: '',
   date: '',
-  user: '',
+  user_name: '',
   path: '',
   description: '',
 };
@@ -29,7 +23,6 @@ class FileDataForm extends React.Component {
   }
 
   handleChange(e) {
-    console.log(this.state);
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -53,17 +46,24 @@ class FileDataForm extends React.Component {
           onChange={this.handleChange}
         />
         <input
-          name="user"
+          name="user_name"
           type="text"
-          value={this.state.user}
+          value={this.state.user_name}
           placeholder="Your name"
+          onChange={this.handleChange}
+        />
+        <input
+          name="description"
+          type="text"
+          value={this.state.description}
+          placeholder="Enter a description"
           onChange={this.handleChange}
         />
         <input
           name="path"
           type="text"
-          value={this.state.task}
-          placeholder="Enter To Do Item"
+          value={this.state.path}
+          placeholder="Enter the filepath"
           onChange={this.handleChange}
         />
 

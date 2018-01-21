@@ -1,7 +1,9 @@
+require('dotenv').config({ path: `${__dirname}/../.env` });
+
 const HTMLPlugin = require('html-webpack-plugin');
 const ExtractPlugin = require('extract-text-webpack-plugin');
 
-const { EnviromentPlugin, DefinePlugin } = require('webpack');
+const { EnvironmentPlugin, DefinePlugin } = require('webpack');
 
 const production = process.NODE_ENV;
 
@@ -10,13 +12,14 @@ const plugins = [
     template: `${__dirname}/src/index.html`,
   }),
   new ExtractPlugin('bundle.[hash].css'),
-  new EnviromentPlugin(['NODE_ENV']),
+  new EnvironmentPlugin(['NODE_ENV']),
   new DefinePlugin({
-    ___API_URL___: JSON.stringify(process.env.API_URL),
-    __DEBUG___: JSON.stringify(!production),
+    __API_URL__: JSON.stringify(process.env.API_URL),
+    __DEBUG__: JSON.stringify(!production),
   }),
 ];
 
+console.log(process.env.API_URL);
 module.exports = {
 
   plugins,
