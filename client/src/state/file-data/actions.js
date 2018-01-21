@@ -18,9 +18,9 @@ const updateAction = payload => ({
   payload,
 });
 
-const deleteAction = todo => ({
+const deleteAction = id => ({
   type: 'DELETE',
-  payload: todo,
+  payload: id,
 });
 
 export const init = () => (dispatch) => {
@@ -44,10 +44,9 @@ export const update = payload => (dispatch) => {
     .catch(console.error);
 };
 
-export const del = payload => (dispatch) => {
-  const url = `${API}/${payload}._id}`;
+export const remove = id => (dispatch) => {
+  const url = `${API}/${id}`;
   superagent.delete(url)
-    .send(payload)
     .then(res => dispatch(deleteAction(res.body)))
     .catch(console.error);
 };

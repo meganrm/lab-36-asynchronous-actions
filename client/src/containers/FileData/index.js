@@ -16,12 +16,16 @@ class FileData extends React.Component {
   }
 
   render() {
-    const { fileDataCreate, fileDataArray } = this.props;
+    const {
+      fileDataCreate,
+      fileDataArray,
+      fileDataDelete,
+    } = this.props;
 
     return (
       <div>
         <FileDataForm createHandler={fileDataCreate} />
-        <FileDataDisplay toDisplay={fileDataArray} />
+        <FileDataDisplay toDisplay={fileDataArray} fileDataDelete={fileDataDelete} />
       </div>
     );
   }
@@ -32,6 +36,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fileDataCreate: fileData => dispatch(fileDataActions.create(fileData)),
+  fileDataDelete: id => dispatch(fileDataActions.remove(id)),
   fileDataInitialize: () => dispatch(fileDataActions.init()),
 });
 

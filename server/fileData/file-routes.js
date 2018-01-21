@@ -42,6 +42,7 @@ fileRouter.post('/visual_files', jsonParser, (req, res, next) => {
 
 fileRouter.patch('/visual_files/:id', jsonParser, (req, res, next) => {
   let newFileData = new FileData(req.body);
+
   delete newFileData._id;
   FileData.findOneAndUpdate({_id : req.params.id}, {$set:newFileData})
     .then(() => res.status(200).send('success!'))
@@ -65,18 +66,12 @@ fileRouter.put(
       });
   });
 
-fileRouter.delete('/visual_files', jsonParser, (req, res, next) => {
-  FileData.find({_id: req.params.id})
-    .then( file => {
-      if (file.user != req.user._id) {
-        return next({statusCode: 403, message: 'you dont have authority to delete someone elses file'});
-      }
-      FileData.remove({_id: req.params.id})
-        .then(() => res.status(200).send('metadata successfully deleted'))
-        .catch((err) => {
-          next(errorCheck(err, req.body));
-        });
+fileRouter.delete('/visual_files/:id', (req, res, next) => {
+  FileData.remove({_id: req.params.id})
+    .then(() => res.status(200).send('metadata successfully deleted'))
+    .catch((err) => {
+      console.log(err);
+      next(errorCheck(err, req.body));
+
     });
-
-
 });
