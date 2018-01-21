@@ -11,6 +11,12 @@ const FileDataDefault = {
   description: '',
 };
 
+const buttonMap = {
+  creator: 'Save',
+  updater: 'Update',
+
+};
+
 class FileDataForm extends React.Component {
   constructor(props) {
     super(props);
@@ -37,6 +43,7 @@ class FileDataForm extends React.Component {
   }
 
   render() {
+    const { type } = this.props;
     return (
 
       <form onSubmit={this.handleSubmit}>
@@ -70,7 +77,7 @@ class FileDataForm extends React.Component {
           onChange={this.handleChange}
         />
 
-        <button type="submit">Save Item</button>
+        <button type="submit">{buttonMap[type]}</button>
 
       </form>
     );
