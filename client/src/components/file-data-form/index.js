@@ -35,7 +35,6 @@ class FileDataForm extends React.Component {
   handleSubmit(e) {
     const { submitHandler, type } = this.props;
     e.preventDefault();
-    console.log(this.state);
     submitHandler(Object.assign({}, this.state));
     if (type === 'creator') {
       this.setState({ ...FileDataDefault });

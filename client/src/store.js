@@ -9,8 +9,9 @@ import { fileData } from './state';
 const reducers = {
   fileData: fileData.reducer,
 };
+
 const rootReducer = combineReducers(reducers);
 
-const store = createStore(rootReducer, applyMiddleware(fileData.thunk));
+const store = createStore(rootReducer, applyMiddleware(fileData.reporter, fileData.thunk));
 
 export default store;
