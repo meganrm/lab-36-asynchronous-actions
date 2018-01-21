@@ -27,10 +27,13 @@ class FileDataForm extends React.Component {
   }
 
   handleSubmit(e) {
-    const { createHandler } = this.props;
+    const { submitHandler, type } = this.props;
     e.preventDefault();
-    createHandler(Object.assign({}, this.state));
-    this.setState({ ...FileDataDefault });
+    console.log(this.state);
+    submitHandler(Object.assign({}, this.state));
+    if (type === 'creator') {
+      this.setState({ ...FileDataDefault });
+    }
   }
 
   render() {
@@ -76,12 +79,14 @@ class FileDataForm extends React.Component {
 
 
 FileDataForm.propTypes = {
-  createHandler: PropTypes.func.isRequired,
   fileData: PropTypes.shape(FileDataType),
+  submitHandler: PropTypes.func.isRequired,
+  type: PropTypes.string,
 };
 
 FileDataForm.defaultProps = {
   fileData: FileDataDefault,
+  type: 'creator',
 };
 
 export default FileDataForm;

@@ -37,10 +37,10 @@ export const create = payload => (dispatch) => {
 };
 
 export const update = payload => (dispatch) => {
-  const url = `${API}/${payload}._id}`;
+  const url = `${API}`;
   superagent.put(url)
     .send(payload)
-    .then(res => dispatch(updateAction(res.body)))
+    .then(() => dispatch(updateAction(payload)))
     .catch(console.error);
 };
 

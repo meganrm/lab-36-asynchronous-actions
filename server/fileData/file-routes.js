@@ -52,12 +52,12 @@ fileRouter.patch('/visual_files/:id', jsonParser, (req, res, next) => {
 });
 
 fileRouter.put(
-  '/visual_files/:id',
+  '/visual_files/',
   jsonParser, (req, res, next) => {
-    let newFileData = (new FileData(req.body)).toJSON();
+    let newFileData = Object.assign({}, req.body);
     newFileData._id = null;
     delete newFileData._id;
-    FileData.findOneAndUpdate({_id: req.params.id}, newFileData)
+    FileData.findOneAndUpdate({_id: req.body._id}, newFileData)
       .then(() => {
         res.status(200).send('success!');
       })
