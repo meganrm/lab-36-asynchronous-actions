@@ -1,12 +1,18 @@
 401 JS --  Lab 36 Full Stack Crud
 ===
 
-#### Test
-* Test your redux reducers
-* Test your util methods
+#### setup:
+.env file
+- `PORT`
+- `DB_URL=mongodb://localhost:27017/visual_files_dev`
+- `API_URL=http://localhost:${PORT}/api/v1`
+- `ORIGIN_URL=http://localhost:8080`
+for mongo db:
+- create `server/db` folder
 
-## Bonus 2pts
-* Create full crud for two resources
+#### to run
+- in server/: `npm start`
+- in server/ run `mongod --dbpath=/db`
+- in client/ run `npm run watch`
 
-####  Documentation  
-Write a description of the project in your README.md
+open localhost:8080
