@@ -7,7 +7,6 @@ export default (state = [], { type, payload }) => {
     case 'CREATE':
       return [...state, payload];
     case 'UPDATE':
-      console.log(payload);
       return state.map(item => (item.id === payload.id ? payload : item));
     case 'DELETE':
       return filter(state, { id: payload });
